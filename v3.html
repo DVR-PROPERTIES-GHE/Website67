@@ -3,89 +3,68 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DickClickV3 | DevaydaVR & RonyJvr</title>
+    <title>DickClickV4 | DevaydaVR & RonyJvr</title>
     <style>
-        body {
-            background-color: #181826;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        #progress-container {
-            width: 300px;
-            height: 30px;
-            border: 2px solid #000;
-            margin: 20px auto;
-            border-radius: 10px;
-            overflow: hidden;
-            background-color: #eee;
-        }
-        #progress-bar {
-            height: 100%;
-            width: 0%;
-            background-color: #4caf50;
-            transition: width 0.2s;
-        }
-        img {
-            cursor: pointer;
-            width: 300px;
-            border: 2px solid #000;
-        }
+        body { font-family: Arial; text-align: center; margin-top:50px;}
+        #progress-container { width:300px; height:30px; border:2px solid #000; margin:20px auto; border-radius:10px; overflow:hidden; background:#eee;}
+        #progress-bar { height:100%; width:0%; background:#4caf50; transition: width 0.2s;}
+        img { cursor:pointer; width:300px; border:2px solid #000;}
     </style>
 </head>
 <body>
 
-    <h1 id="counter">0</h1>
-    <h2 id="levelcount">Level 1 - Dick Click</h2>
-    <h3 id="ppc">Points per click: 1</h3>
+<h1 id="counter">0</h1>
+<h2 id="levelcount">Level 1 - Dick Click</h2>
+<h3 id="ppc">Points per click: 1</h3>
 
-    <img
-        src="https://img.buzzfeed.com/buzzfeed-static/static/2017-03/10/10/campaign_images/buzzfeed-prod-fastlane-02/this-artist-will-teach-you-how-to-draw-using-the--2-3249-1489158253-1_dblbig.jpg"
-        onclick="countup()"
-    >
+<img
+    src="https://img.buzzfeed.com/buzzfeed-static/static/2017-03/10/10/campaign_images/buzzfeed-prod-fastlane-02/this-artist-will-teach-you-how-to-draw-using-the--2-3249-1489158253-1_dblbig.jpg"
+    onclick="countup()"
+/>
 
-    <div id="progress-container">
-        <div id="progress-bar"></div>
-    </div>
+<div id="progress-container">
+    <div id="progress-bar"></div>
+</div>
 
-    <h4 id="next">Next level at: 100 points</h4>
+<h4 id="next">Next level at: 100 points</h4>
 
-    <script>
-        let points = 0;
-        let level = 1;
-        let pointsPerClick = 1;
-        let nextLevelAt = 100;
-        let prevLevelAt = 0;
+<script>
+let points = 0;
+let level = 1;
+let pointsPerClick = 1;
+let nextLevelAt = 100;
+let prevLevelAt = 0;
 
-        function countup() {
-            points += pointsPerClick;
+function countup() {
+    points += pointsPerClick;
 
-            // Handle multiple level-ups if points exceed nextLevelAt
-            while (points >= nextLevelAt) {
-                level++;
-                pointsPerClick *= 2;
-                prevLevelAt = nextLevelAt;
-                nextLevelAt = prevLevelAt + 100; // Each level requires 100 more points
+    // Handle multiple level-ups safely
+    while (points >= nextLevelAt) {
+        level++;
+        pointsPerClick = Math.min(pointsPerClick * 2, 1024); // Cap at 1024 to prevent crash
+        prevLevelAt = nextLevelAt;
+        nextLevelAt = prevLevelAt + 100 * level; // Each level harder than last
 
-                document.getElementById("levelcount").innerText =
-                    "Level " + level + " - Dick Click";
-                document.getElementById("ppc").innerText =
-                    "Points per click: " + pointsPerClick;
-            }
+        document.getElementById("levelcount").innerText =
+            "Level " + level + " - Dick Click";
 
-            // Update counter
-            document.getElementById("counter").innerText = points;
+        document.getElementById("ppc").innerText =
+            "Points per click: " + pointsPerClick;
+    }
 
-            // Update progress bar (percentage of current level)
-            let progressPercent = ((points - prevLevelAt) / (nextLevelAt - prevLevelAt)) * 100;
-            if (progressPercent > 100) progressPercent = 100;
-            document.getElementById("progress-bar").style.width = progressPercent + "%";
+    // Update counter
+    document.getElementById("counter").innerText = points;
 
-            // Update next level text
-            document.getElementById("next").innerText =
-                "Next level at: " + nextLevelAt + " points";
-        }
-    </script>
+    // Update progress bar
+    let progressPercent = ((points - prevLevelAt) / (nextLevelAt - prevLevelAt)) * 100;
+    if (progressPercent > 100) progressPercent = 100;
+    document.getElementById("progress-bar").style.width = progressPercent + "%";
+
+    document.getElementById("next").innerText =
+        "Next level at: " + nextLevelAt + " points";
+}
+</script>
 
 </body>
 </html>
+
