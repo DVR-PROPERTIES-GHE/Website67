@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DickClickV2 | DevaydaVR & RonyJvr</title>
+    <title>DickClickV3 | DevaydaVR & RonyJvr</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,17 +54,17 @@
         let level = 1;
         let pointsPerClick = 1;
         let nextLevelAt = 100;
-        let prevLevelAt = 0; // start of current level
+        let prevLevelAt = 0;
 
         function countup() {
             points += pointsPerClick;
 
-            // Handle multiple level-ups
+            // Handle multiple level-ups if points exceed nextLevelAt
             while (points >= nextLevelAt) {
                 level++;
                 pointsPerClick *= 2;
                 prevLevelAt = nextLevelAt;
-                nextLevelAt *= 2;
+                nextLevelAt = prevLevelAt + 100; // Each level requires 100 more points
 
                 document.getElementById("levelcount").innerText =
                     "Level " + level + " - Dick Click";
