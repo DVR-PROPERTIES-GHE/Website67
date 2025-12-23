@@ -7,41 +7,43 @@
 </head>
 <body>
 
-    <img 
-        id="imageclick"
+    <img
         src="https://img.buzzfeed.com/buzzfeed-static/static/2017-03/10/10/campaign_images/buzzfeed-prod-fastlane-02/this-artist-will-teach-you-how-to-draw-using-the--2-3249-1489158253-1_dblbig.jpg"
-        alt="image"
         onclick="countup()"
-        style="cursor:pointer;"
+        style="cursor:pointer; width:300px;"
     >
 
-    <h1 class="header" id="counter">0</h1>
+    <h1 id="counter">0</h1>
     <h2 id="levelcount">Level 1 - Dick Click</h2>
-
-    <div class="navbar">
-        <a href="https://porn.com/?ref=08145725">PORN.COM Affiliate</a>
-        <a onclick="playmedia(1)">Hi</a>
-        <a href="https://sites.google.com/view/helpdvr/">DVR Website</a>
-        <a href="contact.html">Contact Us</a>
-    </div>
+    <h3 id="ppc">Points per click: 1</h3>
+    <h4 id="next">Next level at: 100</h4>
 
     <script>
-        let count = 0;
+        let points = 0;
+        let level = 1;
+        let pointsPerClick = 1;
+        let nextLevelAt = 100;
 
         function countup() {
-            count++;
+            points += pointsPerClick;
 
-            const counterEl = document.getElementById("counter");
-            const levelEl = document.getElementById("levelcount");
+            // Level up logic (doubling requirement)
+            if (points >= nextLevelAt) {
+                level++;
+                pointsPerClick = 2;
+                nextLevelAt= 2;
 
-            counterEl.innerText = count;
+                document.getElementById("levelcount").innerText =
+                    "Level " + level + " - Dick Click";
 
-            if (count === 100) {
-                levelEl.innerText = "Level 2 - Dick Click";
-            } 
-            else if (count === 200) {
-                levelEl.innerText = "Level 3 - Dick Click";
+                document.getElementById("ppc").innerText =
+                    "Points per click: " + pointsPerClick;
+
+                document.getElementById("next").innerText =
+                    "Next level at: " + nextLevelAt;
             }
+
+            document.getElementById("counter").innerText = points;
         }
     </script>
 
