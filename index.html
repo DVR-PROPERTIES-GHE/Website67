@@ -3,50 +3,163 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DickClickV1 | DevaydaVR & RonyJvr</title>
+    <title>DickClickV3 | DevaydaVR & RonyJvr</title>
+    <style>
+/* ---- Reset & Base ---- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(circle at top, #1e1e2f, #0f0f1a);
+    color: #f5f7fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ---- Game Container ---- */
+.game {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 32px 40px;
+    text-align: center;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    max-width: 420px;
+    width: 100%;
+}
+
+/* ---- Clickable Image ---- */
+.game img {
+    width: 260px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+}
+
+.game img:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.6);
+}
+
+.game img:active {
+    transform: scale(0.97);
+}
+
+/* ---- Counter ---- */
+#counter {
+    font-size: 64px;
+    font-weight: 800;
+    margin-top: 24px;
+    margin-bottom: 6px;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #8be9fd, #bd93f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ---- Level & Stats ---- */
+#levelcount {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: #eaeaf0;
+}
+
+#ppc,
+#next {
+    font-size: 15px;
+    color: #b9bbd1;
+    margin-bottom: 6px;
+}
+
+/* ---- Small polish ---- */
+#ppc::before {
+    content: "⚡ ";
+}
+
+#next::before {
+    content: "🎯 ";
+}
+
+/* ---- Mobile tweaks ---- */
+@media (max-width: 480px) {
+    .game {
+        padding: 24px;
+    }
+
+    .game img {
+        width: 220px;
+    }
+
+    #counter {
+        font-size: 52px;
+    }
+}
+</style>
+
 </head>
 <body>
-
-    <img
-        src="https://img.buzzfeed.com/buzzfeed-static/static/2017-03/10/10/campaign_images/buzzfeed-prod-fastlane-02/this-artist-will-teach-you-how-to-draw-using-the--2-3249-1489158253-1_dblbig.jpg"
-        onclick="countup()"
-        style="cursor:pointer; width:300px;"
-    >
 
     <h1 id="counter">0</h1>
     <h2 id="levelcount">Level 1 - Dick Click</h2>
     <h3 id="ppc">Points per click: 1</h3>
-    <h4 id="next">Next level at: 100</h4>
 
-<script>
-    let points = 0;
-    let level = 1;
-    let pointsPerClick = 1;
-    let nextLevelAt = 100;
+    <img
+        src="https://img.buzzfeed.com/buzzfeed-static/static/2017-03/10/10/campaign_images/buzzfeed-prod-fastlane-02/this-artist-will-teach-you-how-to-draw-using-the--2-3249-1489158253-1_dblbig.jpg"
+        onclick="countup()"
+    >
 
-    function countup() {
-        points += pointsPerClick;
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
 
-        // Handle multiple level-ups safely
-        while (points >= nextLevelAt) {
-            level++;
-            pointsPerClick *= 2;      // scale clicks
-            nextLevelAt *= 2;         // scale requirement
+    <h4 id="next">Next level at: 100 points</h4>
 
-            document.getElementById("levelcount").innerText =
-                "Level " + level + " - Dick Click";
+    <script>
+        let points = 0;
+        let level = 1;
+        let pointsPerClick = 1;
+        let nextLevelAt = 100;
+        let prevLevelAt = 0;
 
-            document.getElementById("ppc").innerText =
-                "Points per click: " + pointsPerClick;
+        function countup() {
+            points += pointsPerClick;
 
+            // Handle multiple level-ups if points exceed nextLevelAt
+            while (points >= nextLevelAt) {
+                level++;
+                pointsPerClick *= 2;
+                prevLevelAt = nextLevelAt;
+                nextLevelAt = prevLevelAt + 100; // Each level requires 100 more points
+
+                document.getElementById("levelcount").innerText =
+                    "Level " + level + " - Dick Click";
+                document.getElementById("ppc").innerText =
+                    "Points per click: " + pointsPerClick;
+            }
+
+            // Update counter
+            document.getElementById("counter").innerText = points;
+
+            // Update progress bar (percentage of current level)
+            let progressPercent = ((points - prevLevelAt) / (nextLevelAt - prevLevelAt)) * 100;
+            if (progressPercent > 100) progressPercent = 100;
+            document.getElementById("progress-bar").style.width = progressPercent + "%";
+
+            // Update next level text
             document.getElementById("next").innerText =
-                "Next level at: " + nextLevelAt;
+                "Next level at: " + nextLevelAt + " points";
         }
-
-        document.getElementById("counter").innerText = points;
-    }
-</script>
-
+    </script>
 
 </body>
 </html>
