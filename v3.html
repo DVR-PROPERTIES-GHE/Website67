@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DickClickV4 | DevaydaVR & RonyJvr</title>
+    <title>DickClickV5 | DevaydaVR & RonyJvr</title>
     <style>
         body { font-family: Arial; text-align: center; margin-top:50px;}
         #progress-container { width:300px; height:30px; border:2px solid #000; margin:20px auto; border-radius:10px; overflow:hidden; background:#eee;}
@@ -19,7 +19,7 @@
 
 <img
     src="https://img.buzzfeed.com/buzzfeed-static/static/2017-03/10/10/campaign_images/buzzfeed-prod-fastlane-02/this-artist-will-teach-you-how-to-draw-using-the--2-3249-1489158253-1_dblbig.jpg"
-    onclick="countup()"
+    id="click-image"
 />
 
 <div id="progress-container">
@@ -28,43 +28,11 @@
 
 <h4 id="next">Next level at: 100 points</h4>
 
-<script>
-let points = 0;
-let level = 1;
-let pointsPerClick = 1;
-let nextLevelAt = 100;
-let prevLevelAt = 0;
+<!-- Click sound -->
+<audio id="click-sound" src="https://www.myinstants.com/media/sounds/click-sound.mp3"></audio>
 
-function countup() {
-    points += pointsPerClick;
-
-    // Handle multiple level-ups safely
-    while (points >= nextLevelAt) {
-        level++;
-        pointsPerClick = Math.min(pointsPerClick * 2, 1024); // Cap at 1024 to prevent crash
-        prevLevelAt = nextLevelAt;
-        nextLevelAt = prevLevelAt + 100 * level; // Each level harder than last
-
-        document.getElementById("levelcount").innerText =
-            "Level " + level + " - Dick Click";
-
-        document.getElementById("ppc").innerText =
-            "Points per click: " + pointsPerClick;
-    }
-
-    // Update counter
-    document.getElementById("counter").innerText = points;
-
-    // Update progress bar
-    let progressPercent = ((points - prevLevelAt) / (nextLevelAt - prevLevelAt)) * 100;
-    if (progressPercent > 100) progressPercent = 100;
-    document.getElementById("progress-bar").style.width = progressPercent + "%";
-
-    document.getElementById("next").innerText =
-        "Next level at: " + nextLevelAt + " points";
-}
-</script>
+<!-- Include external JS -->
+<script src="clicker.js"></script>
 
 </body>
 </html>
-
