@@ -18,34 +18,35 @@
     <h3 id="ppc">Points per click: 1</h3>
     <h4 id="next">Next level at: 100</h4>
 
-    <script>
-        let points = 0;
-        let level = 1;
-        let pointsPerClick = 1;
-        let nextLevelAt = 100;
+<script>
+    let points = 0;
+    let level = 1;
+    let pointsPerClick = 1;
+    let nextLevelAt = 100;
 
-        function countup() {
-            points += pointsPerClick;
+    function countup() {
+        points += pointsPerClick;
 
-            // Level up logic (doubling requirement)
-            if (points >= nextLevelAt) {
-                level++;
-                pointsPerClick = 2;
-                nextLevelAt= 2;
+        // Handle multiple level-ups safely
+        while (points >= nextLevelAt) {
+            level++;
+            pointsPerClick *= 2;      // scale clicks
+            nextLevelAt *= 2;         // scale requirement
 
-                document.getElementById("levelcount").innerText =
-                    "Level " + level + " - Dick Click";
+            document.getElementById("levelcount").innerText =
+                "Level " + level + " - Dick Click";
 
-                document.getElementById("ppc").innerText =
-                    "Points per click: " + pointsPerClick;
+            document.getElementById("ppc").innerText =
+                "Points per click: " + pointsPerClick;
 
-                document.getElementById("next").innerText =
-                    "Next level at: " + nextLevelAt;
-            }
-
-            document.getElementById("counter").innerText = points;
+            document.getElementById("next").innerText =
+                "Next level at: " + nextLevelAt;
         }
-    </script>
+
+        document.getElementById("counter").innerText = points;
+    }
+</script>
+
 
 </body>
 </html>
